@@ -1,1 +1,374 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d1c">
+<title>LINGUAX — Learn Without Limits</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg:#090d1c;
+  --panel:#11182b;
+  --panel2:#172139;
+  --text:#f4f6ff;
+  --muted:#929bb5;
+  --purple:#9575ff;
+  --cyan:#50d9e9;
+  --border:rgba(255,255,255,.09);
+  --green:#55d6a0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Sans',sans-serif;min-height:100vh;
+}
+button{font:inherit;cursor:pointer}
+.app{max-width:1200px;margin:auto;padding:22px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0 24px;border-bottom:1px solid var(--border);
+}
+.logo{font:800 27px 'Outfit';letter-spacing:-1.5px}
+.logo span{color:var(--cyan)}
+.logo small{display:block;font:500 9px 'DM Sans';letter-spacing:3px;color:var(--muted)}
+.profile{display:flex;align-items:center;gap:12px}
+.avatar{
+  width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,#9575ff,#50d9e9);
+  display:grid;place-items:center;font-weight:800;color:#101528;
+}
+.profile-info small{color:var(--muted);display:block;font-size:11px}
+.profile-info b{font-size:13px}
+.welcome{padding:30px 0 20px}
+.eyebrow{color:var(--cyan);font-size:11px;font-weight:700;letter-spacing:2px}
+h1{font:700 clamp(27px,5vw,39px) 'Outfit';margin:8px 0}
+.welcome p{color:var(--muted);font-size:14px}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;margin:22px 0;
+}
+.stat,.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:19px;padding:18px;
+}
+.stat-icon{font-size:20px}
+.stat strong{display:block;font:700 24px 'Outfit';margin:8px 0 2px}
+.stat small{color:var(--muted);font-size:11px}
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:28px 0 14px;
+}
+.section-title h2{font:600 19px 'Outfit'}
+.section-title span{font-size:11px;color:var(--muted)}
+.courses{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.course{
+  border:1px solid var(--border);border-radius:20px;
+  padding:18px;background:var(--panel);position:relative;
+  transition:.2s;cursor:pointer;
+}
+.course.active{border-color:var(--purple);background:linear-gradient(145deg,#211c40,#11182b)}
+.course:hover{transform:translateY(-2px)}
+.course-flag{font-size:30px}
+.course h3{font:600 17px 'Outfit';margin:12px 0 4px}
+.course p{font-size:12px;color:var(--muted)}
+.course .tag{font-size:10px;color:var(--cyan);margin-top:13px;display:block}
+.course-check{position:absolute;right:15px;top:15px;color:var(--cyan)}
+.progress-area{margin-top:24px}
+.progress-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:9px}
+.progress-head span:last-child{color:var(--cyan)}
+.track{height:8px;background:#252d43;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:20px;transition:.4s}
+.lesson-card{
+  background:linear-gradient(115deg,#25204b,#142b40);
+  border:1px solid rgba(149,117,255,.28);
+  border-radius:22px;padding:22px;margin-top:20px;
+}
+.lesson-card .eyebrow{font-size:10px}
+.lesson-card h2{font:700 23px 'Outfit';margin:10px 0}
+.lesson-card p{color:#c0c8dc;font-size:13px;line-height:1.6}
+.primary{
+  border:0;background:linear-gradient(100deg,#9575ff,#5bcde7);
+  color:#101528;padding:13px 20px;border-radius:12px;
+  font-weight:800;margin-top:18px;width:100%;
+}
+.primary:hover{filter:brightness(1.1)}
+.secondary{
+  background:var(--panel2);color:var(--text);
+  border:1px solid var(--border);padding:11px 16px;
+  border-radius:11px;font-weight:600;
+}
+.bottom-note{text-align:center;color:#69748e;font-size:11px;padding:35px 0 15px}
+.screen{display:none}
+.screen.active{display:block}
+.back{background:none;border:0;color:var(--cyan);padding:10px 0;font-weight:600}
+.quiz-box{margin-top:20px}
+.question-count{color:var(--cyan);font-size:12px;font-weight:700}
+.question{font:600 24px 'Outfit';margin:20px 0}
+.options{display:grid;gap:11px}
+.option{
+  background:var(--panel2);border:1px solid var(--border);
+  color:var(--text);padding:15px;border-radius:13px;
+  text-align:left;font-size:14px;
+}
+.option:hover{border-color:var(--purple)}
+.option.correct{border-color:var(--green);background:#15382e}
+.option.wrong{border-color:#ff7777;background:#3b202b}
+.feedback{font-size:13px;margin-top:15px;min-height:20px;color:var(--muted)}
+.quiz-footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+.result{text-align:center;padding:35px 15px}
+.result .big{font-size:55px}
+.result h2{font:700 28px 'Outfit';margin:15px 0}
+.result p{color:var(--muted);font-size:14px}
+@media(min-width:750px){
+  .app{padding:28px 36px}
+  .dashboard-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
+  .lesson-card{margin-top:0}
+  .primary{width:auto}
+}
+@media(max-width:430px){
+  .app{padding:16px}
+  .stat{padding:13px}
+  .stat strong{font-size:20px}
+  .course{padding:14px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="logo">LINGU<span>AX</span><small>LEARN WITHOUT LIMITS</small></div>
+  <div class="profile">
+    <div class="profile-info"><small>YOUR LEARNING SPACE</small><b>Learner</b></div>
+    <div class="avatar">L</div>
+  </div>
+</header>
+
+<main id="dashboard" class="screen active">
+  <section class="welcome">
+    <div class="eyebrow">YOUR JOURNEY STARTS HERE</div>
+    <h1>Learn a little.<br>Grow a lot. ✨</h1>
+    <p>Every new word brings you closer to fluency.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><div class="stat-icon">🔥</div><strong id="streak">0</strong><small>Day streak</small></div>
+    <div class="stat"><div class="stat-icon">⚡</div><strong id="xp">0</strong><small>Total XP</small></div>
+    <div class="stat"><div class="stat-icon">📚</div><strong id="completed">0</strong><small>Lessons done</small></div>
+  </section>
+
+  <div class="section-title">
+    <h2>Choose your language</h2><span>01 / COURSES</span>
+  </div>
+
+  <section class="courses">
+    <div class="course active" id="english" onclick="selectCourse('english')">
+      <span class="course-check" id="english-check">✓</span>
+      <div class="course-flag">🇬🇧</div>
+      <h3>English</h3>
+      <p>Build confidence in English.</p>
+      <span class="tag">VOCABULARY · GRAMMAR</span>
+    </div>
+    <div class="course" id="spanish" onclick="selectCourse('spanish')">
+      <span class="course-check" id="spanish-check" style="display:none">✓</span>
+      <div class="course-flag">🇪🇸</div>
+      <h3>Spanish</h3>
+      <p>Discover a beautiful new language.</p>
+      <span class="tag">VOCABULARY · GRAMMAR</span>
+    </div>
+  </section>
+
+  <div class="dashboard-grid">
+    <section>
+      <div class="section-title"><h2>Daily progress</h2><span id="goal-label">0 / 5 XP</span></div>
+      <div class="card">
+        <div class="progress-head"><b>Today's learning goal</b><span id="goal-percent">0%</span></div>
+        <div class="track"><div class="fill" id="goal-fill"></div></div>
+        <p style="color:var(--muted);font-size:12px;margin-top:13px">A few minutes of practice can make a difference.</p>
+      </div>
+    </section>
+
+    <section class="lesson-card">
+      <div class="eyebrow">✦ YOUR NEXT LESSON</div>
+      <h2 id="lesson-title">English essentials</h2>
+      <p id="lesson-description">Start with useful everyday words and build your vocabulary step by step.</p>
+      <button class="primary" onclick="startLesson()">Start learning →</button>
+    </section>
+  </div>
+
+  <div class="section-title"><h2>Your learning path</h2><span>BEGINNER · A1</span></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div><b>01. First words</b><p style="font-size:12px;color:var(--muted);margin-top:5px">Learn your first everyday words</p></div>
+      <span style="font-size:25px">🌱</span>
+    </div>
+    <div class="progress-area">
+      <div class="progress-head"><span>Lesson progress</span><span id="lesson-progress">0%</span></div>
+      <div class="track"><div class="fill" id="lesson-fill"></div></div>
+    </div>
+  </div>
+</main>
+
+<main id="quiz" class="screen">
+  <button class="back" onclick="goHome()">← Back to dashboard</button>
+  <div class="quiz-box card" id="quiz-content"></div>
+</main>
+
+<div class="bottom-note">LINGUAX © 2026 · Made for curious minds.</div>
+</div>
+
+<script>
+const data = {
+ english: {
+  name:"English",flag:"🇬🇧",
+  description:"Learn useful English words for everyday conversations.",
+  questions:[
+   {q:"What does 'Hello' mean?",a:["Goodbye","হ্যালো / নমস্কার","Thank you","Please"],correct:1,ex:"Hello is a greeting used when meeting someone."},
+   {q:"Choose the English word for 'পানি'.",a:["Food","Water","House","Book"],correct:1,ex:"Water means পানি."},
+   {q:"What does 'Beautiful' mean?",a:["সুন্দর","দ্রুত","বড়","ছোট"],correct:0,ex:"Beautiful describes something or someone that is pleasing to see."},
+   {q:"Complete: How ___ you?",a:["is","am","are","be"],correct:2,ex:"We say 'How are you?' when asking about someone's well-being."},
+   {q:"What is the opposite of 'Hot'?",a:["Warm","Cold","Fast","Tall"],correct:1,ex:"Cold is the opposite of hot."}
+  ]
+ },
+ spanish: {
+  name:"Spanish",flag:"🇪🇸",
+  description:"Start speaking Spanish with useful beginner vocabulary.",
+  questions:[
+   {q:"What does 'Hola' mean?",a:["Goodbye","Hello","Thank you","Please"],correct:1,ex:"Hola (OH-lah) means Hello."},
+   {q:"Choose the Spanish word for 'Water'.",a:["Casa","Agua","Libro","Sol"],correct:1,ex:"Agua (AH-gwah) means Water."},
+   {q:"What does 'Gracias' mean?",a:["Sorry","Good morning","Thank you","Good night"],correct:2,ex:"Gracias (GRAH-syahs) means Thank you."},
+   {q:"What does 'Amigo' mean?",a:["Friend","Family","School","Food"],correct:0,ex:"Amigo means male friend; amiga means female friend."},
+   {q:"What does 'Buenos días' mean?",a:["Good night","Good morning","Goodbye","See you"],correct:1,ex:"Buenos días is a morning greeting."}
+  ]
+ }
+};
+
+let state = JSON.parse(localStorage.getItem("linguax-data") || "{}");
+state.xp = state.xp || 0;
+state.completed = state.completed || 0;
+state.streak = state.streak || 0;
+state.lastDate = state.lastDate || "";
+state.course = state.course || "english";
+state.progress = state.progress || {english:0,spanish:0};
+
+let current = 0, score = 0, answered = false;
+
+function save(){
+ localStorage.setItem("linguax-data",JSON.stringify(state));
+ updateDashboard();
+}
+
+function selectCourse(course){
+ state.course=course;
+ document.querySelectorAll(".course").forEach(el=>el.classList.remove("active"));
+ document.getElementById(course).classList.add("active");
+ document.getElementById("english-check").style.display=course==="english"?"block":"none";
+ document.getElementById("spanish-check").style.display=course==="spanish"?"block":"none";
+ save();
+}
+
+function updateDashboard(){
+ const d=data[state.course];
+ document.getElementById("xp").textContent=state.xp;
+ document.getElementById("completed").textContent=state.completed;
+ document.getElementById("streak").textContent=state.streak;
+ document.getElementById("lesson-title").textContent=d.name+" essentials";
+ document.getElementById("lesson-description").textContent=d.description;
+ const p=state.progress[state.course] || 0;
+ document.getElementById("lesson-progress").textContent=Math.round(p/d.questions.length*100)+"%";
+ document.getElementById("lesson-fill").style.width=(p/d.questions.length*100)+"%";
+ const todayXP=state.lastDate===new Date().toDateString()?(state.todayXP||0):0;
+ document.getElementById("goal-label").textContent=Math.min(todayXP,5)+" / 5 XP";
+ document.getElementById("goal-percent").textContent=Math.min(todayXP/5*100,100)+"%";
+ document.getElementById("goal-fill").style.width=Math.min(todayXP/5*100,100)+"%";
+}
+
+function startLesson(){
+ current=0;score=0;
+ showQuestion();
+ document.getElementById("dashboard").classList.remove("active");
+ document.getElementById("quiz").classList.add("active");
+}
+
+function showQuestion(){
+ const d=data[state.course],q=d.questions[current];
+ answered=false;
+ document.getElementById("quiz-content").innerHTML=`
+ <div class="question-count">${d.flag} ${d.name.toUpperCase()} · QUESTION ${current+1} OF ${d.questions.length}</div>
+ <div class="track" style="margin-top:14px"><div class="fill" style="width:${current/d.questions.length*100}%"></div></div>
+ <div class="question">${q.q}</div>
+ <div class="options">${q.a.map((a,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${a}</button>`).join("")}</div>
+ <div class="feedback" id="feedback">Choose the correct answer.</div>
+ <div class="quiz-footer"><span style="color:var(--muted);font-size:12px">⚡ Earn XP by learning</span><button class="secondary" id="next" onclick="nextQuestion()" disabled style="opacity:.45">Next →</button></div>`;
+}
+
+function answer(index){
+ if(answered)return;
+ answered=true;
+ const q=data[state.course].questions[current];
+ const buttons=document.querySelectorAll(".option");
+ buttons[q.correct].classList.add("correct");
+ if(index===q.correct){
+  score++;
+  document.getElementById("feedback").textContent="✓ Correct! "+q.ex;
+  document.getElementById("feedback").style.color="var(--green)";
+ }else{
+  buttons[index].classList.add("wrong");
+  document.getElementById("feedback").textContent="Not quite. "+q.ex;
+  document.getElementById("feedback").style.color="#ff9999";
+ }
+ buttons.forEach(b=>b.disabled=true);
+ const next=document.getElementById("next");
+ next.disabled=false;next.style.opacity="1";
+}
+
+function nextQuestion(){
+ if(!answered)return;
+ current++;
+ if(current<data[state.course].questions.length){showQuestion();return;}
+ finishLesson();
+}
+
+function finishLesson(){
+ const d=data[state.course];
+ const earned=score*10;
+ state.xp+=earned;
+ state.completed++;
+ const today=new Date().toDateString();
+ if(state.lastDate!==today){
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  state.streak=state.lastDate===yesterday?state.streak+1:1;
+  state.lastDate=today;
+  state.todayXP=0;
+ }
+ state.todayXP=(state.todayXP||0)+earned;
+ state.progress[state.course]=Math.max(state.progress[state.course]||0,d.questions.length);
+ save();
+ document.getElementById("quiz-content").innerHTML=`
+ <div class="result">
+ <div class="big">${score>=4?"🏆":"🌟"}</div>
+ <div class="eyebrow">LESSON COMPLETED</div>
+ <h2>${score===5?"Excellent work!":"Great effort!"}</h2>
+ <p>You answered ${score} out of ${d.questions.length} questions correctly.</p>
+ <h2 style="color:var(--cyan)">+${earned} XP ⚡</h2>
+ <button class="primary" onclick="goHome()">Back to dashboard</button>
+ <button class="secondary" style="width:100%;margin-top:10px" onclick="startLesson()">Practice again</button>
+ </div>`;
+}
+
+function goHome(){
+ document.getElementById("quiz").classList.remove("active");
+ document.getElementById("dashboard").classList.add("active");
+ updateDashboard();
+}
+
+updateDashboard();
+selectCourse(state.course);
+</script>
+</body>
+</html>
+
